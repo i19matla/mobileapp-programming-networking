@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         my_listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getApplicationContext(), "Rostat bröd är gött även på " + mountains[1], Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Berget " + mountains[position] + " är " + mountains[position].getSize() + "meter högt och det ligger i "+ mountains[position].getLocation(), Toast.LENGTH_SHORT).show();
             }
         });
     }
