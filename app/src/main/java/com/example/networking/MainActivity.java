@@ -26,7 +26,7 @@ import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity {
 
-    private ArrayAdapter<Mountain> adapter; //Skapar en global variabel även kallat medlemsvariabel
+    private ArrayAdapter<Mountain> adapter;
     private ArrayList<Mountain> mountainsListan = new ArrayList<>();
 
     @Override
@@ -34,9 +34,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        adapter = new ArrayAdapter<Mountain>(this,R.layout.listatext,R.id.textView2, mountainsListan); //Skapar objeket
-        ListView myListview = findViewById(R.id.listans_id);   //Skapar referensen tänk ungefär som pekare i C++
-        myListview.setAdapter(adapter); //raden ovan och denna skriver ut så vackert
+        adapter = new ArrayAdapter<Mountain>(this,R.layout.listatext,R.id.textView2, mountainsListan);
+        ListView myListview = findViewById(R.id.listans_id);
+        myListview.setAdapter(adapter);
         myListview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -88,9 +88,9 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String json) {
-            Log.d("TAG", json); //Inspekterer jsonfilen från nätet
+            Log.d("TAG", json);
             Gson gson = new Gson();
-            Mountain[] mountains = gson.fromJson(json, Mountain[].class); //Alla klasser är datatyper men alla datatyper är som känt inte klasser
+            Mountain[] mountains = gson.fromJson(json, Mountain[].class);
             mountainsListan.clear();
 
             for(int i = 0; i < mountains.length; i++) {
@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
                 mountainsListan.add(mountains[i]);
             }
 
-            adapter.notifyDataSetChanged();         //Den här talar om för adaptern att det finns uppdaterad information knuten till den.
+            adapter.notifyDataSetChanged();
         }
     }
 

@@ -1,3 +1,32 @@
+# Uppdatering rapport dugga 6:
+Appen är nu uppdaterad med kod som är mer städad än den första inlämningen som blev underkänd på tilvägagångssättet för att lösa uppgiften.
+Koden är nu mer städad och riskerar inte att slösa med ramminne på samma sätt som tidigare.
+Efter en avskalning av koden och bortplockandet av en medlemsvariabel städades även koden i onPostExecute.
+```
+@Override
+        protected void onPostExecute(String json) {
+            Log.d("TAG", json); //Inspekterer jsonfilen från nätet
+            Gson gson = new Gson();
+            Mountain[] mountains = gson.fromJson(json, Mountain[].class);
+            mountainsListan.clear();
+
+            for(int i = 0; i < mountains.length; i++) {
+                Log.d("Shottabalulu", "onPostExecute: Berget heter " + mountains[i].getName());
+                mountainsListan.add(mountains[i]);
+            }
+
+            adapter.notifyDataSetChanged();
+        }
+```
+I onPostExecute skapas gson objektet som sedan används för att hämta data från jsonfilen i den tilldelade url:en och lagrar i mountains.
+Innan vi därefter kliver in i for-loopen rensas mountinsListan, inte för att det i detta läget egentligen är nödvändigt men för att få
+med tänket att det kan vara nödvändigt. Skulle en knapp eller annat finnas som skulle kunna användas för att mata in informationen så
+behöver informationen också rensas någonstans för att därefter uppdateras med den nya informationen. En bonus med andra ord i detta läget
+som är bra att känna till.
+Vid nästa steg träder vi in i forloopen som skriver ut namnen på de olika bergen till loggen. Därefter laddas mountainListan med informationen
+från mountains då alla positioner där itereras igenom.
+Till sist då vi träder ur for-loopen talar funktionen notifyDataSetChanged() om för adapter att det finns uppdaterad information att skriva
+ut till listview som sedan kommer utföras högre upp i dokumentet i onCreate.
 
 # Rapport dugga 6 Network Mats Läth
 Dugga 6 var en stor utmaning att lösa. Till att börja med gjordes en återgång till dugga tre för att öva på materialet där

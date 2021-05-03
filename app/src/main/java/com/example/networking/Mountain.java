@@ -14,10 +14,6 @@ public class Mountain {
     private int cost;
     private Auxdata auxdata;
 
-    /*public Mountain() {
-        name = "Kebenekaise";   trevlig konstruktor
-    }*/
-
     public String getId() {
         return id;
     }
@@ -55,8 +51,8 @@ public class Mountain {
     }
 
     @Override
-    public String toString() {      //toString är vad som alltid kommer skrivas ut då ett objekt kallas på
-        return name;               // om bara objeket anropas kommer toString automatiskt att anropas.
+    public String toString() {
+        return name;
     }
 
 
