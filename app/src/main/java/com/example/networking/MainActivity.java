@@ -25,28 +25,25 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity {
-    //private ArrayList<Mountain>mountains; //Skapar den privata medlemsvariabeln av filen mountain.java
-    private Mountain mountains[] = {new Mountain()};
+
     private ArrayAdapter<Mountain> adapter; //Skapar en global variabel även kallat medlemsvariabel
-    private ArrayList<Mountain> mountainsListan = new ArrayList<>(Arrays.asList(mountains));
-    private ListView my_listview;
+    private ArrayList<Mountain> mountainsListan = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        new JsonTask().execute("https://wwwlab.iit.his.se/brom/kurser/mobilprog/dbservice/admin/getdataasjson.php?type=brom");
+
         adapter = new ArrayAdapter<Mountain>(this,R.layout.listatext,R.id.textView2, mountainsListan); //Skapar objeket
-        my_listview = (ListView) findViewById(R.id.listans_id);   //Skapar referensen tänk ungefär som pekare i C++
-
-        my_listview.setAdapter(adapter); //Här läggs JsonTask skörden in till listan
-
-        my_listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        ListView myListview = findViewById(R.id.listans_id);   //Skapar referensen tänk ungefär som pekare i C++
+        myListview.setAdapter(adapter); //raden ovan och denna skriver ut så vackert
+        myListview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getApplicationContext(), "Berget " + mountains[position] + " är " + mountains[position].getSize() + "meter högt och det ligger i "+ mountains[position].getLocation(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Berget " + mountainsListan.get(position) + " är " + mountainsListan.get(position).getSize() + "meter högt och det ligger i "+ mountainsListan.get(position).getLocation(), Toast.LENGTH_SHORT).show();
             }
         });
+        new JsonTask().execute("https://wwwlab.iit.his.se/brom/kurser/mobilprog/dbservice/admin/getdataasjson.php?type=brom");
     }
 
     @SuppressLint("StaticFieldLeak")
@@ -91,16 +88,17 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String json) {
-            Log.d("TAG", json);
+            Log.d("TAG", json); //Inspekterer jsonfilen från nätet
             Gson gson = new Gson();
-            mountains = gson.fromJson(json, Mountain[].class);
-            adapter.notifyDataSetChanged();         //Fram hit uppdateras bara listan i ramminnet
-            adapter = new ArrayAdapter<Mountain>(MainActivity.this,R.layout.listatext,R.id.textView2, mountains);
-            my_listview.setAdapter(adapter); //raden ovan och denna skriver ut så vackert
+            Mountain[] mountains = gson.fromJson(json, Mountain[].class); //Alla klasser är datatyper men alla datatyper är som känt inte klasser
+            mountainsListan.clear();
 
             for(int i = 0; i < mountains.length; i++) {
-                Log.d("Shottabalulu", "onPostExecute: Berget heter " + mountains[i].getType());
+                Log.d("Shottabalulu", "onPostExecute: Berget heter " + mountains[i].getName());
+                mountainsListan.add(mountains[i]);
             }
+
+            adapter.notifyDataSetChanged();         //Den här talar om för adaptern att det finns uppdaterad information knuten till den.
         }
     }
 
